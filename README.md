@@ -1,5 +1,4 @@
-# plausible
+# Slack
 
-UNOFFICIAL hybrid native + web app for Plausible
+UNOFFICIAL hybrid native + web app for Slack
 
-![Screenshot](data/screenshot.png)
