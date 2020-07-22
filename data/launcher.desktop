@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Slack
+GenericName=Chat
+Comment=Chat on Slack
+Categories=Network;GTK;
+Exec=com.github.cassidyjames.slack
+Icon=com.github.cassidyjames.slack
+Terminal=false
+Type=Application
+X-GNOME-Gettext-Domain=com.github.cassidyjames.slack
+Keywords=slack;chat;messaging;
