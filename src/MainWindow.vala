@@ -78,14 +78,16 @@ public class Slack.MainWindow : Gtk.Window {
             maximize ();
         }
 
-        web_view.load_changed.connect ((load_event) => {
+        web_view.notify["title"].connect (() => {
             string title_to_set = web_view.title;
             if (title_to_set != "") {
                 title = title_to_set;
             } else {
                 title = "Slack";
             }
+        });
 
+        web_view.load_changed.connect ((load_event) => {
             if (load_event == WebKit.LoadEvent.FINISHED) {
                 stack.visible_child_name = "web";
             }
