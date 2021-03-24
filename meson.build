@@ -1,5 +1,5 @@
 project(
-    'com.github.cassidyjames.slack',
+    'com.cassidyjames.slack',
     'vala', 'c',
     version: '0.0.1'
 )
@@ -16,7 +16,7 @@ asresources = gnome.compile_resources (
 
 executable(
     meson.project_name(),
-    join_paths('src', 'Application.vala'),
+    join_paths('src', 'App.vala'),
     join_paths('src', 'MainWindow.vala'),
     join_paths('src', 'WebContext.vala'),
     join_paths('src', 'Widgets', 'WebView.vala'),

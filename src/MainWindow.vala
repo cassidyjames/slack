@@ -26,7 +26,7 @@ public class Slack.MainWindow : Gtk.Window {
         Object (
             application: application,
             border_width: 0,
-            icon_name: Application.instance.application_id,
+            icon_name: App.instance.application_id,
             resizable: true,
             title: "Slack",
             window_position: Gtk.WindowPosition.CENTER
@@ -44,9 +44,9 @@ public class Slack.MainWindow : Gtk.Window {
         header.get_style_context ().add_class ("default-decoration");
 
         web_view = new Slack.WebView ();
-        web_view.load_uri ("https://" + Application.instance.subdomain + ".slack.com");
+        web_view.load_uri ("https://" + App.instance.subdomain + ".slack.com");
 
-        var logo = new Gtk.Image.from_resource ("/com/github/cassidyjames/slack/splash.png") {
+        var logo = new Gtk.Image.from_resource ("/com/cassidyjames/slack/splash.png") {
             expand = true,
             margin_bottom = 48
         };
@@ -67,5 +67,81 @@ public class Slack.MainWindow : Gtk.Window {
                 stack.visible_child_name = "web";
             }
         });
+
+        App.settings.bind ("zoom", web_view, "zoom-level", SettingsBindFlags.DEFAULT);
+
+        var accel_group = new Gtk.AccelGroup ();
+
+        accel_group.connect (
+            Gdk.Key.plus,
+            Gdk.ModifierType.CONTROL_MASK,
+            Gtk.AccelFlags.VISIBLE | Gtk.AccelFlags.LOCKED,
+            () => {
+                zoom_in ();
+                return true;
+            }
+        );
+
+        accel_group.connect (
+            Gdk.Key.equal,
+            Gdk.ModifierType.CONTROL_MASK,
+            Gtk.AccelFlags.VISIBLE | Gtk.AccelFlags.LOCKED,
+            () => {
+                zoom_in ();
+                return true;
+            }
+        );
+
+        accel_group.connect (
+            Gdk.Key.minus,
+            Gdk.ModifierType.CONTROL_MASK,
+            Gtk.AccelFlags.VISIBLE | Gtk.AccelFlags.LOCKED,
+            () => {
+                zoom_out ();
+                return true;
+            }
+        );
+
+        accel_group.connect (
+            Gdk.Key.@0,
+            Gdk.ModifierType.CONTROL_MASK,
+            Gtk.AccelFlags.VISIBLE | Gtk.AccelFlags.LOCKED,
+            () => {
+                zoom_default ();
+                return true;
+            }
+        );
+
+        add_accel_group (accel_group);
+    }
+
+    private void zoom_in () {
+        if (web_view.zoom_level < 5.0) {
+            web_view.zoom_level = web_view.zoom_level + 0.1;
+        } else {
+            Gdk.beep ();
+        }
+
+        return;
+    }
+
+    private void zoom_out () {
+        if (web_view.zoom_level > 0.2) {
+            web_view.zoom_level = web_view.zoom_level - 0.1;
+        } else {
+            Gdk.beep ();
+        }
+
+        return;
+    }
+
+    private void zoom_default () {
+        if (web_view.zoom_level != 1.0) {
+            web_view.zoom_level = 1.0;
+        } else {
+            Gdk.beep ();
+        }
+
+        return;
     }
 }
