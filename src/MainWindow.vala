@@ -21,6 +21,7 @@
 
 public class Slack.MainWindow : Gtk.Window {
     private Slack.WebView web_view;
+    private uint configure_id;
 
     public MainWindow (Gtk.Application application) {
         Object (
@@ -61,6 +62,21 @@ public class Slack.MainWindow : Gtk.Window {
 
         set_titlebar (header);
         add (stack);
+
+        int window_x, window_y;
+        int window_width, window_height;
+        App.settings.get ("window-position", "(ii)", out window_x, out window_y);
+        App.settings.get ("window-size", "(ii)", out window_width, out window_height);
+
+        if (window_x != -1 || window_y != -1) {
+            move (window_x, window_y);
+        }
+
+        resize (window_width, window_height);
+
+        if (App.settings.get_boolean ("window-maximized")) {
+            maximize ();
+        }
 
         web_view.load_changed.connect ((load_event) => {
             if (load_event == WebKit.LoadEvent.FINISHED) {
@@ -113,6 +129,33 @@ public class Slack.MainWindow : Gtk.Window {
         );
 
         add_accel_group (accel_group);
+    }
+
+    public override bool configure_event (Gdk.EventConfigure event) {
+        if (configure_id == 0) {
+            // Avoid spamming the settings
+            configure_id = Timeout.add (200, () => {
+                configure_id = 0;
+
+                if (is_maximized) {
+                    App.settings.set_boolean ("window-maximized", true);
+                } else {
+                    App.settings.set_boolean ("window-maximized", false);
+
+                    int width, height;
+                    get_size (out width, out height);
+                    App.settings.set ("window-size", "(ii)", width, height);
+
+                    int root_x, root_y;
+                    get_position (out root_x, out root_y);
+                    App.settings.set ("window-position", "(ii)", root_x, root_y);
+                }
+
+                return GLib.Source.REMOVE;
+            });
+        }
+
+        return base.configure_event (event);
     }
 
     private void zoom_in () {
