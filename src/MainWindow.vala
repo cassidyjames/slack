@@ -68,6 +68,8 @@ public class Slack.MainWindow : Gtk.Window {
             }
         });
 
+        App.settings.bind ("zoom", web_view, "zoom-level", SettingsBindFlags.DEFAULT);
+
         var accel_group = new Gtk.AccelGroup ();
 
         accel_group.connect (
