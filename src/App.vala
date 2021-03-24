@@ -19,23 +19,28 @@
 * Authored by: Cassidy James Blaede <c@ssidyjam.es>
 */
 
-public class Slack.Application : Gtk.Application {
+public class Slack.App : Gtk.Application {
     public string subdomain = "ele";
+    public static GLib.Settings settings;
 
-    public Application () {
+    public App () {
         Object (
-            application_id: "com.github.cassidyjames.slack"
+            application_id: "com.cassidyjames.slack"
         );
     }
 
-    public static Application _instance = null;
-    public static Application instance {
+    public static App _instance = null;
+    public static App instance {
         get {
             if (_instance == null) {
-                _instance = new Application ();
+                _instance = new App ();
             }
             return _instance;
         }
+    }
+
+    static construct {
+        settings = new Settings (App.instance.application_id);
     }
 
     protected override void activate () {
@@ -66,7 +71,7 @@ public class Slack.Application : Gtk.Application {
     }
 
     public static int main (string[] args) {
-        var app = new Application ();
+        var app = new App ();
         return app.run (args);
     }
 }

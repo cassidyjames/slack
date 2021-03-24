@@ -54,5 +54,7 @@ public class Slack.WebView : WebKit.WebView {
 
             return false;
         });
+
+        App.settings.bind ("zoom", this, "zoom-level", SettingsBindFlags.DEFAULT);
     }
 }
