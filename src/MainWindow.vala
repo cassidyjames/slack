@@ -79,6 +79,13 @@ public class Slack.MainWindow : Gtk.Window {
         }
 
         web_view.load_changed.connect ((load_event) => {
+            string title_to_set = web_view.title;
+            if (title_to_set != "") {
+                title = title_to_set;
+            } else {
+                title = "Slack";
+            }
+
             if (load_event == WebKit.LoadEvent.FINISHED) {
                 stack.visible_child_name = "web";
             }
