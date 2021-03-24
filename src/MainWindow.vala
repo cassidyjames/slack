@@ -79,8 +79,8 @@ public class Slack.MainWindow : Gtk.Window {
         }
 
         web_view.notify["title"].connect (() => {
-            string title_to_set = web_view.title;
-            if (title_to_set != "") {
+            string? title_to_set = web_view.title;
+            if (title_to_set != null && title_to_set != "") {
                 title = title_to_set;
             } else {
                 title = "Slack";
