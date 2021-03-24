@@ -1,5 +1,5 @@
 /*
-* Copyright © 2020 Cassidy James Blaede (https://cassidyjames.com)
+* Copyright © 2020–2021 Cassidy James Blaede (https://cassidyjames.com)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -41,6 +41,20 @@ public class Slack.Application : Gtk.Application {
     protected override void activate () {
         var app_window = new MainWindow (this);
         app_window.show_all ();
+
+
+        var granite_settings = Granite.Settings.get_default ();
+        var gtk_settings = Gtk.Settings.get_default ();
+
+        gtk_settings.gtk_application_prefer_dark_theme = (
+            granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK
+        );
+
+        granite_settings.notify["prefers-color-scheme"].connect (() => {
+            gtk_settings.gtk_application_prefer_dark_theme = (
+                granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK
+            );
+        });
 
         var quit_action = new SimpleAction ("quit", null);
         add_action (quit_action);

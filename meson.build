@@ -24,11 +24,11 @@ executable(
     join_paths('src', 'Widgets', 'WebView.vala'),
     asresources,
     dependencies: [
-        dependency('granite'),
-        dependency('gtk+-3.0'),
+        dependency('granite', version: '>= 6.0'),
+        dependency('gtk+-3.0', version: '>= 3.24'),
         # dependency('javascriptcoregtk-4.0'),
         # dependency('libsoup-2.4'),
-        dependency('webkit2gtk-4.0'),
+        dependency('webkit2gtk-4.0', version: '>= 2.30'),
     ],
     install: true
 )
